@@ -134,6 +134,7 @@ type GoCloak interface {
  LogoutPublicClient(ctx context.Context, clientID, realm, accessToken, refreshToken string) error
  LogoutAllSessions(ctx context.Context, accessToken, realm, userID string) error
  RevokeUserConsents(ctx context.Context, accessToken, realm, userID, clientID string) error
+ GetConsents(ctx context.Context, accessToken, realm, userID) error
  LogoutUserSession(ctx context.Context, accessToken, realm, session string) error
  LoginClient(ctx context.Context, clientID, clientSecret, realm string) (*JWT, error)
  LoginClientSignedJWT(ctx context.Context, clientID, realm string, key interface{}, signedMethod jwt.SigningMethod, expiresAt *jwt.Time) (*JWT, error)

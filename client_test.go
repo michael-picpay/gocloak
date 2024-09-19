@@ -21,12 +21,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-resty/resty/v2"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/pkcs12"
-
-	"github.com/Nerzal/gocloak/v13"
 )
 
 type configAdmin struct {
@@ -2674,6 +2670,23 @@ func Test_RevokeUserConsents(t *testing.T) {
 	)
 
 	require.NoError(t, err, "Consent revocation failed")
+}
+
+func Test_GetUserConsents(t *testing.T) {
+	t.Parallel()
+	cfg := GetConfig(t)
+	client := NewClientWithDebug(t)
+	token := GetAdminToken(t, client)
+
+	// Chamar o método GetConsents
+	consents, err := client.GetUserConsents(context.Background(), token.AccessToken, cfg.GoCloak.Realm, "user-id")
+
+	// Verificar se não houve erro
+	require.NoError(t, err, "Failed to get consents")
+
+	// Verificar se a resposta contém os dados esperados
+	require.NotNil(t, consents, "Consents should not be nil")
+	t.Logf("Consents: %+v", consents)
 }
 
 func Test_LogoutUserSession(t *testing.T) {

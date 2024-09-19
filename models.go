@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"strings"
-
-	"github.com/golang-jwt/jwt/v5"
 )
 
 // GetQueryParams converts the struct to map[string]string
@@ -1425,6 +1423,21 @@ type GetClientUserSessionsParams struct {
 	Max   *int `json:"max,string,omitempty"`
 }
 
+// ConsentRepresentation represents a keycloak consent list
+type ConsentRepresentation struct {
+	LastUpdatedDate     int64       `json:"lastUpdatedDate"`
+	ClientID            string      `json:"clientId"`
+	CreatedDate         int64       `json:"createdDate"`
+	GrantedClientScopes []string    `json:"grantedClientScopes"`
+	AdditionalGrants    []GrantInfo `json:"additionalGrants"`
+	SellerId            *string     `json:"sellerId,omitempty"`
+}
+
+// GrantedClientScopeRepresentation represents a keycloak consent
+type GrantedClientScopeRepresentation struct {
+	ScopeName *string `json:"scopeName,omitempty"`
+}
+
 // prettyStringStruct returns struct formatted into pretty string
 func prettyStringStruct(t interface{}) string {
 	json, err := json.MarshalIndent(t, "", "\t")
@@ -1519,3 +1532,5 @@ func (v *CredentialRepresentation) String() string                  { return pre
 func (v *RequiredActionProviderRepresentation) String() string      { return prettyStringStruct(v) }
 func (v *BruteForceStatus) String() string                          { return prettyStringStruct(v) }
 func (v *GetClientUserSessionsParams) String() string               { return prettyStringStruct(v) }
+func (v *ConsentRepresentation) String() string                     { return prettyStringStruct(v) }
+func (v *GrantedClientScopeRepresentation) String() string          { return prettyStringStruct(v) }

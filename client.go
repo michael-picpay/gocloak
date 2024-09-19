@@ -12,9 +12,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-resty/resty/v2"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/opentracing/opentracing-go"
 	"github.com/pkg/errors"
 	"github.com/segmentio/ksuid"
 
@@ -681,6 +678,23 @@ func (g *GoCloak) RevokeUserConsents(ctx context.Context, accessToken, realm, us
 		Delete(g.getAdminRealmURL(realm, "users", userID, "consents", clientID))
 
 	return checkForError(resp, err, errMessage)
+}
+
+// GetUserConsents retrieve a list of consents
+func (g *GoCloak) GetUserConsents(ctx context.Context, accessToken, realm, userID string) ([]*ConsentRepresentation, error) {
+	const errMessage = "could not get consents"
+	var result []*ConsentRepresentation
+
+	resp, err := g.getRequestWithBearerAuth(ctx, accessToken).
+		SetResult(&result).
+		Get(g.getAdminRealmURL(realm, "users", userID, "consents"))
+	if err != nil {
+		return nil, errors.Wrap(err, errMessage)
+	}
+	if resp.IsError() {
+		return nil, errors.Wrap(errors.New(resp.Status()), errMessage)
+	}
+	return result, nil
 }
 
 // LogoutUserSession logs out a single sessions of a user given a session id
