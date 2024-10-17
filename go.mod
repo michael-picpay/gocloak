@@ -1,4 +1,4 @@
-module github.com/michael-picpay/gocloak/v1
+module github.com/Nerzal/gocloak/v13
 
 go 1.18
 
