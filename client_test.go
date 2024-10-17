@@ -25,6 +25,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/pkcs12"
+
+	"github.com/Nerzal/gocloak/v13"
 )
 
 type configAdmin struct {
